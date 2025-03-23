@@ -1,0 +1,4 @@
+.env
+
+n8n.*.pem
+n8n.*.key
