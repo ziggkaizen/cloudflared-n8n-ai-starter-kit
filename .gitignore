@@ -1,6 +1,11 @@
-.env
+# This file was added by Zigg Kaizen on 2025.03,24 as part of the modifications
+# to add Cloudflared and Nginx support. It is not part of the original
+# Self-hosted AI Starter Kit by n8n.io.
+#
 
+.env
 n8n.*.pem
 n8n.*.key
-
 nginx.conf
+.vscode/
+temp/

@@ -1,15 +1,36 @@
-# Self-hosted AI starter kit
+<!--
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at:
+    http://www.apache.org/licenses/LICENSE-2.0
+
+This file is part of the Self-hosted AI Starter Kit by n8n.io.
+Modified by Zigg Kaizen on 2025.03.24: Added Cloudflared and Nginx support.
+-->
+
+# Cloudflared N8N - Self-hosted AI starter kit
 
 **Self-hosted AI Starter Kit** is an open-source Docker Compose template designed to swiftly initialize a comprehensive local AI and low-code development environment.
+Curated by <https://github.com/n8n-io>, it combines the self-hosted n8n platform with a curated list of compatible AI products and components to quickly get started with building self-hosted AI workflows.
 
-![n8n.io - Screenshot](https://raw.githubusercontent.com/n8n-io/self-hosted-ai-starter-kit/main/assets/n8n-demo.gif)
+The **Cloudflared N8N AI Starter Kit (This fork)** builds on the original Self-hosted AI Starter Kit by integrating Cloudflared and an Nginx reverse proxy. This enhancement allows you to deploy your local n8n instance behind a secure reverse proxy using your own domain. With this setup, your locally installed n8n becomes accessible from the internet while maintaining the benefits of local hosting, such as improved data privacy and control. The integration provides a robust and flexible solution for securely managing and accessing your AI workflows.
 
-Curated by <https://github.com/n8n-io>, it combines the self-hosted n8n
-platform with a curated list of compatible AI products and components to
-quickly get started with building self-hosted AI workflows.
+Additionally it comes with a preinstalled workflow for taking backups of your workflows and credentioals, locally saved as json files. Hope you find this helpfull. Cheers!
 
-> [!TIP]
-> [Read the announcement](https://blog.n8n.io/self-hosted-ai/)
+![n8n.io - Screenshot](https://raw.githubusercontent.com/ziggkaizen/cloudflared-n8n-ai-starter-kit/main/assets/n8n-demo.gif)
+
+---
+
+## Fork Notice & Modifications
+
+This repository is a fork of the original [Self-hosted AI Starter Kit by n8n.io](https://github.com/n8n-io/self-hosted-ai-starter-kit) and is distributed under the Apache License 2.0.  
+**Modifications Made:**  
+- Added support for Cloudflared to establish secure tunnels.
+- Integrated Nginx as a reverse proxy with SSL termination.
+- Updated Docker Compose configurations to support the above additions.
+- Delivered with a preinstalled workflow to take local backups of your workflows and credentials.
+
+---
 
 ### What’s included
 
@@ -25,6 +46,11 @@ store with an comprehensive API
 ✅ [**PostgreSQL**](https://www.postgresql.org/) -  Workhorse of the Data
 Engineering world, handles large amounts of data safely.
 
+✅ [**Cloudflared**](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) – Secure tunnel to connect a domain to your local n8n install.
+
+✅ [**Nginx**](https://nginx.org/) – As reverse proxy and SSL termination.
+
+
 ### What you can build
 
 ⭐️ **AI Agents** for scheduling appointments
@@ -37,10 +63,40 @@ Engineering world, handles large amounts of data safely.
 
 ## Installation
 
+### Prerequisites
+
+1. A registered domain of your own.
+2. A Cloudflare account (free sign-up available at <https://dash.cloudflare.com/sign-up>).
+3. Your domain must be added to your Cloudflare account.
+4. Your domain must be configured with Cloudflare DNS.
+
+### Setting up your tunnel
+
+Follow the steps below or follow this detailed guide to set up your tunnel:
+
+[How to set up a cloudflared tunnel - Google Docs](https://docs.google.com/document/d/1lIIS_uWS5SR4RGdggBQ0fXtszF7SdgbzqdngbgTR0Gc/edit?usp=sharing)
+
+ 1. Sign in to your Cloudflare account at [cloudflare.com/login](https://cloudflare.com/login).  
+ 2. In the left-hand menu, click on **Zero Trust**.  
+ 3. Within the Zero Trust dashboard, navigate to **Network → Tunnels** and then select **Add a tunnel**.  
+ 4. Click on **Select Cloudflared**.  
+ 5. Enter a name of your choice for the tunnel.  
+ 6. Click the **Save tunnel** button.  
+ 7. Choose any environment and copy the terminal command that includes your personal token.  
+ 8. Extract the token from the command and store it securely. Do not share this token with anyone. (For example, you should see a token similar to the one in this Docker command:  
+   ```
+   docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token eyJhIjoiNDNlMjVmYjcxODNkNDZhZjRmYzdiYzExOWU3YmVmZWEiLCJ0IjoiNzM5NDE2YjI0OTNlYTFlZmI4MjZmODhlZjY3MWRhNGQiLCJzIjoiTWpReU1qVXdPRFl4TWpReU56Z3pNRGcxTWpneSIsImIiOiJwYXlsb2FkIn0=
+   ```  
+   )  
+ 9. Finally, click the **Next** button.
+10. Finally set up your traffic routing.
+
+Get the full 
+
 ### Cloning the Repository
 
 ```bash
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
+git clone https://github.com/ziggkaizen/cloudflared-n8n-ai-starter-kit.git
 cd self-hosted-ai-starter-kit
 ```
 
@@ -49,9 +105,9 @@ cd self-hosted-ai-starter-kit
 #### For Nvidia GPU users
 
 ```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose --profile gpu-nvidia up
+git clone https://github.com/ziggkaizen/cloudflared-n8n-ai-starter-kit.git
+cd cloudflared-n8n-ai-starter-kit
+docker compose --profile gpu-nvidia up -d
 ```
 
 > [!NOTE]
@@ -61,9 +117,9 @@ docker compose --profile gpu-nvidia up
 ### For AMD GPU users on Linux
 
 ```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose --profile gpu-amd up
+git clone https://github.com/ziggkaizen/cloudflared-n8n-ai-starter-kit.git
+cd cloudflared-n8n-ai-starter-kit
+docker compose --profile gpu-amd up -d
 ```
 
 #### For Mac / Apple Silicon users
@@ -81,9 +137,9 @@ If you want to run Ollama on your mac, check the
 for installation instructions, and run the starter kit as follows:
 
 ```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose up
+git clone https://github.com/ziggkaizen/cloudflared-n8n-ai-starter-kit.git
+cd cloudflared-n8n-ai-starter-kit
+docker compose up -d
 ```
 
 ##### For Mac users running OLLAMA locally
@@ -99,18 +155,18 @@ x-n8n: &service-n8n
     - OLLAMA_HOST=host.docker.internal:11434
 ```
 
-Additionally, after you see "Editor is now accessible via: <http://localhost:5678/>":
+Additionally, after you see "Editor is now accessible via: <https://subdomain.example.com>":
 
-1. Head to <http://localhost:5678/home/credentials>
+1. Head to <https://subdomain.example.com/home/credentials>
 2. Click on "Local Ollama service"
 3. Change the base URL to "http://host.docker.internal:11434/"
 
 #### For everyone else
 
 ```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose --profile cpu up
+git clone https://github.com/ziggkaizen/cloudflared-n8n-ai-starter-kit.git
+cd cloudflared-n8n-ai-starter-kit
+docker compose --profile cpu up -d
 ```
 
 ## ⚡️ Quick start and usage
@@ -118,16 +174,16 @@ docker compose --profile cpu up
 The core of the Self-hosted AI Starter Kit is a Docker Compose file, pre-configured with network and storage settings, minimizing the need for additional installations.
 After completing the installation steps above, simply follow the steps below to get started.
 
-1. Open <http://localhost:5678/> in your browser to set up n8n. You’ll only
+1. Open <https://subdomain.example.com/> (tour domain) in your browser to set up n8n. You’ll only
    have to do this once.
 2. Open the included workflow:
-   <http://localhost:5678/workflow/srOnR8PAY3u4RSwb>
+   <https://subdomain.example.com/workflow/srOnR8PAY3u4RSwb>
 3. Click the **Chat** button at the bottom of the canvas, to start running the workflow.
 4. If this is the first time you’re running the workflow, you may need to wait
    until Ollama finishes downloading Llama3.2. You can inspect the docker
    console logs to check on the progress.
 
-To open n8n at any time, visit <http://localhost:5678/> in your browser.
+To open n8n at any time, visit <https://subdomain.example.com/> (your domain) in your browser.
 
 With your n8n instance, you’ll have access to over 400 integrations and a
 suite of basic and advanced AI nodes such as
